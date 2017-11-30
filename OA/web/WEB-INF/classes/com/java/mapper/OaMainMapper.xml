@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaMainDao">
+
+   <resultMap type="OaMain" id="OaMainMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="TYPE" property="type" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CRE_TIME" property="creTime" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CRE_USER_ID" property="creUserId" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CRE_USER_NAME" property="creUserName" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CRE_DEPT_ID" property="creDeptId" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CRE_DEPT_NAME" property="creDeptName" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="TITLE" property="title" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="SUBFLAG" property="subflag" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="END_TIME" property="endTime" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查看 -->
+  <select id="select" resultMap="OaMainMap">
+    select * from oa_main where id = #{id}
+  </select>
+  
+  <!-- 新增 -->
+  <insert id="add" parameterType="OaMain">
+  	insert into oa_main(ID,TYPE,CRE_TIME,CRE_USER_ID,CRE_USER_NAME,CRE_DEPT_ID,CRE_DEPT_NAME,TITLE,SUBFLAG,END_TIME) values(
+  	#{id,jdbcType=VARCHAR},
+  	#{type,jdbcType=VARCHAR},
+  	#{creTime,jdbcType=VARCHAR},
+  	#{creUserId,jdbcType=VARCHAR},
+  	#{creUserName,jdbcType=VARCHAR},
+  	#{creDeptId,jdbcType=VARCHAR},
+  	#{creDeptName,jdbcType=VARCHAR},
+  	#{title,jdbcType=VARCHAR},
+  	#{subflag,jdbcType=VARCHAR},
+  	#{endTime,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 删除 -->
+  <delete id="delete">
+  	delete from oa_main where id = #{id}
+  </delete>
+  
+  <!-- 修改状态 -->
+  <update id="update">
+  	update oa_main set subflag=#{subflag} where id = #{id}
+  </update>
+  
+  <!-- 修改标题 -->
+  <update id="updateTitle">
+  	update oa_main set title=#{title} where id = #{id}
+  </update>
+  
+  <!-- 办结 -->
+  <update id="banjie">
+  	update oa_main set subflag=#{subflag}, END_TIME = #{endTime} where id = #{id}
+  </update>
+  
+  <!-- 插待办 -->
+  <insert id="addFLowWrite" parameterType="FlowWrite">
+    insert into flow_write(ID,RECORD_ID,LOG_ID,CREATE_TIME,USER_ID,USER_NAME,PRE_USER_ID,PRE_USER_NAME) values(
+    	#{id,jdbcType=VARCHAR},
+    	#{recordId,jdbcType=VARCHAR},
+    	#{logId,jdbcType=VARCHAR},
+    	#{createTime,jdbcType=VARCHAR},
+    	#{userId,jdbcType=VARCHAR},
+    	#{userName,jdbcType=VARCHAR},
+    	#{preUserId,jdbcType=VARCHAR},
+    	#{preUserName,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <!-- 删待办 -->
+  <delete id="delFlowWrite">
+  	delete from flow_write where id = #{id}
+  </delete>
+  
+  <!-- 插已办 -->
+  <insert id="addFlowRead" parameterType="FlowRead">
+  	insert into flow_read(ID,RECORD_ID,LOG_ID,CREATE_TIME,USER_ID,USER_NAME) values(
+    	#{id,jdbcType=VARCHAR},
+    	#{recordId,jdbcType=VARCHAR},
+    	#{logId,jdbcType=VARCHAR},
+    	#{createTime,jdbcType=VARCHAR},
+    	#{userId,jdbcType=VARCHAR},
+    	#{userName,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <!-- 删已办 -->
+  <delete id="delFlowRead" parameterType="java.util.Map">
+  	delete from flow_read where record_id = #{id} and user_id = #{userId}
+  </delete>
+  
+  
+  <!-- 插流程记录 -->
+  <insert id="addFlowLog" parameterType="FlowLog">
+  	insert into flow_log(ID,RECORD_ID,SEND_TIME,SEND_USER_ID,SEND_USER_NAME,RECEIVE_USER_ID,RECEIVE_USER_NAME,IDEA,IS_BACK) values(
+    	#{id,jdbcType=VARCHAR},
+    	#{recordId,jdbcType=VARCHAR},
+    	#{sendTime,jdbcType=VARCHAR},
+    	#{sendUserId,jdbcType=VARCHAR},
+    	#{sendUserName,jdbcType=VARCHAR},
+    	#{receiveUserId,jdbcType=VARCHAR},
+    	#{receiveUserName,jdbcType=VARCHAR},
+    	#{idea,jdbcType=VARCHAR},
+    	#{isBack,jdbcType=VARCHAR}
+    )
+  </insert>
+  
+  <!-- 查看流程记录 -->
+  <select id="getFLowLog" resultType="java.util.Map">
+  	select SEND_TIME as "sendTime",
+  		   SEND_USER_NAME as "sendUser", 
+  		   RECEIVE_USER_NAME as "receiveUser",
+  		   IDEA as "idea",
+  		   IS_BACK as "isBack"
+    from flow_log where record_id = #{id} order by send_time
+  </select>
+</mapper>

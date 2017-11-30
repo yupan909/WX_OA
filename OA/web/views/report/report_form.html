@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>工作报告单</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container containerNew">
+	<form id="frm" action="">
+		 <input type="hidden" id="id" name="id" value="">
+		 <input type="hidden" id="wid" name="wid" value="">
+		 
+		 <div class="form-group">
+		   	 <label for="reportType"><label style="color: red">*</label>报告类型：</label>
+		   	 <select class="form-control" id="reportType" name="reportType" onchange="changeTitle(this);">
+		   	 	<option value="">请选择</option>
+		   	 	<option value="日报">日报</option>
+		   	 	<option value="周报">周报</option>
+		   	 	<option value="月报">月报</option>
+		   	 </select>
+		 </div>
+		 <div class="form-group">
+		    <label for="reportTitle"><label style="color: red">*</label>报告标题：</label>
+		    <input type="text" class="form-control" id="reportTitle" name="reportTitle" placeholder="2017-04-10日报、2017-04 第1周 周报 、2017-04 月报">
+		 </div>
+		 <div class="form-group">
+		    <label for="reportSum"><label style="color: red">*</label>工作总结：</label>
+		    <textarea class="form-control" rows="3" id="reportSum" name="reportSum" placeholder="请填写工作总结"></textarea>
+		 </div>
+		 <div class="form-group">
+		    <label for="reportPlan">工作计划：</label>
+		    <textarea class="form-control" rows="3" id="reportPlan" name="reportPlan" placeholder="请填写工作计划"></textarea>
+		 </div>
+		 <div class="form-group">
+		    <label for="reportRealize">工作体会：</label>
+		    <textarea class="form-control" rows="3" id="reportRealize" name="reportRealize" placeholder="请填写工作体会"></textarea>
+		 </div>
+		 
+		 <!-- 接收人 -->
+		 <div class="form-group">
+		 	<label for="userName"><span class="label label-success">接收人</span></label>
+		    <input type="hidden" id="userId" name="userId" value="">
+		    <span class="form-control" id="userName" onclick="Public.selectPeople();"></span>
+		 </div>
+		 
+		 <div class="btnDiv">
+			 <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+			 <button type="button" class="btn btn-success" onclick="saveAndSubmit();">提交</button>
+		 </div>
+	</form>
+</div>
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+<script src="/plugins/calendar/WdatePicker.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>
+<script src="/js/report/report.js"></script>
+</body>
+</html>

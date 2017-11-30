@@ -1,0 +1,95 @@
+/*表单公用css*/
+
+body{
+	background:url("/images/formBackground.png") repeat scroll !important;
+}
+.containerNew{
+	margin-top: 15px;
+	margin-bottom: 50px;
+}
+.btnDiv{
+	width:100%;
+	text-align:center;
+	position:fixed;
+	right:0;
+	left: 0;
+	z-index:1030;
+	bottom:0;
+	padding-bottom:3px;
+	padding-top:3px;
+	background-color: #ccc;
+}
+.span-view{
+	border-bottom: 1px #ccc dashed;
+}
+
+/*提交选择人员*/
+.tree{
+  margin: 20px;	
+}
+.root{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:5px;
+	font-size:22px;
+	background-color: #337ab7;
+	color: #FFF;
+}
+.nav-people > li{
+  cursor:pointer;
+}
+.nav-people > li > a {
+  width:100%;
+  padding: 3px 0px;
+}
+.nav-people > li > a > label {
+	margin-bottom: 0px;
+}
+.nav-child{
+	display: none;
+}
+.nav-child > li{
+  cursor:pointer;
+  padding-left: 35px;
+}
+.nav-child > li > a {
+  width:100%;
+  padding: 3px 10px;
+}
+.nav-child > li > a > label {
+	line-height:30px;
+	vertical-align:middle;
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+.dept{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.dept > a{
+	font-size: 20px;
+}
+.user{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.user > a{
+	color: #5cb85c;
+	font-size: 18px;
+}
+.user > a > img{
+	width: 40px;
+	height: 40px;
+}
+
+.log{
+	line-height: 25px;
+	padding-left: 15px;
+}
+
+.fileDiv > p{
+	padding-left: 15px;
+	padding-right: 15px;
+	border-bottom: 1px #ccc dashed;
+	color: red;
+}

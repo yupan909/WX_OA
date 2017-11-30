@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>测试</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div>下拉加载更多</div>  
+<div class="main" style="height:700px;">  
+     <div class="child" style='border:1px solid red;margin-top:20px;color:grey;height:800px' ></div>  
+</div> 
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+	$(window).scroll(function(){
+        if ($(document).height() <= $(document).scrollTop() + $(window).height()) {  
+            $(".main").append($(".child").clone());  
+        }  
+	});
+	
+    /*$(".main").unbind("scroll").bind("scroll", function(e){  
+        var sum = this.scrollHeight;  
+    });*/  
+}); 
+</script>
+</body>
+</html>

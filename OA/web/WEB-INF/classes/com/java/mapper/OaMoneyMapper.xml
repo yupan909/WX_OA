@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaMoneyDao">
+
+  <!-- 工资条 -->
+  <resultMap type="OaMoney" id="moneyMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="CREATE_TIME" property="createTime" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_TITLE" property="moneyTitle" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_MONTH" property="moneyMonth" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 工资条详情 -->
+  <resultMap type="OaMoneyDetail" id="moneyDetailMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="RECORD_ID" property="recordId" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="EMP_ID" property="empId" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="EMP_NAME" property="empName" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="EMP_DEPT_NAME" property="empDeptName" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_BASE" property="moneyBase" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_JX" property="moneyJx" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_JJ" property="moneyJj" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_CB" property="moneyCb" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_BX" property="moneyBx" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="MONEY_ALL" property="moneyAll" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- ===================================== 列表查询 ========================================= -->
+  
+  <!-- 工资条所有数据列表 -->
+  <select id="selectManagerList" resultType="java.util.Map">
+	select * from (select rownum rn, t.* from (
+		select id as "id", create_time as "time", money_title as "title", money_month as "month" from oa_money 
+			where 1 = 1 
+			<if test="null!=startTime and '' != startTime">
+				and to_date(substr(create_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=endTime and '' != endTime">
+				and to_date(substr(create_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=title and '' != title">
+				and money_title like '%'||#{title}||'%'
+			</if> 
+			<if test="null!=month and '' != month">
+				and money_month = #{month}
+			</if> 
+			order by create_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>
+  </select>
+  
+  <!-- 工资条所有数据列表总记录数 -->
+  <select id="selectManagerListCount" resultType="Integer">
+	select count(1) from oa_money 
+		where 1 = 1 
+		<if test="null!=startTime and '' != startTime">
+			and to_date(substr(create_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=endTime and '' != endTime">
+			and to_date(substr(create_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=title and '' != title">
+			and money_title like '%'||#{title}||'%'
+		</if> 
+		<if test="null!=month and '' != month">
+			and money_month = #{month}
+		</if> 
+  </select>
+  
+  
+  <!-- 工资条明细所有数据列表 -->
+  <select id="selectManagerDetailList" resultType="java.util.Map">
+	select * from (select rownum rn, t.* from (
+		select id as "id",emp_id as "userId",emp_name as "user", emp_dept_name as "dept",money_base as "jb", money_jx as "jx", money_jj as "jj", money_cb as "cb", money_bx as "bx",money_all as "all" from oa_money_detail 
+			where record_id = #{recordId}
+			<if test="null!=user and '' != user">
+				and emp_name like '%'||#{user}||'%'
+			</if> 
+			<if test="null!=dept and '' != dept">
+				and emp_dept_name like '%'||#{dept}||'%'
+			</if> 
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>
+  </select>
+  
+  <!-- 工资条明细所有数据列表总记录数 -->
+  <select id="selectManagerDetailListCount" resultType="Integer">
+	select count(1) from oa_money_detail 
+		where record_id = #{recordId}
+		<if test="null!=user and '' != user">
+			and emp_name like '%'||#{user}||'%'
+		</if> 
+		<if test="null!=dept and '' != dept">
+			and emp_dept_name like '%'||#{dept}||'%'
+		</if> 
+  </select>
+ 
+  <!-- 个人工资条列表-->
+  <select id="selectList" resultType="java.util.HashMap">
+    select d.id as "id", m.CREATE_TIME as "time", m.MONEY_TITLE as "title", m.MONEY_MONTH as "month" from oa_money m, oa_money_detail d where m.id = d.record_id
+    and d.emp_id = #{userId} order by m.create_time desc
+  </select>
+  
+  <!-- ===================================== 工资条 ========================================= -->
+  
+  
+  <!-- 查询工资条明细 -->
+  <select id="selectMoneyDetail" resultMap="moneyDetailMap">
+    select * from oa_money_detail where id = #{id}
+  </select>
+
+  <!-- 新增工资条明细 -->	  
+  <insert id="addMoneyDetail">
+  	insert into oa_money_detail(id, RECORD_ID, EMP_ID, EMP_NAME ,EMP_DEPT_NAME, MONEY_BASE,MONEY_JX,MONEY_JJ,MONEY_CB,MONEY_BX,MONEY_ALL) 
+  	values(#{id},#{recordId},#{empId},#{empName},#{empDeptName},#{moneyBase},#{moneyJx},#{moneyJj},#{moneyCb},#{moneyBx},#{moneyAll})
+  </insert>
+  
+  <!-- 新增工资条 -->	  
+  <insert id="addMoney">
+  	insert into oa_money(id, CREATE_TIME, MONEY_TITLE, MONEY_MONTH) values(#{id},#{createTime},#{moneyTitle},#{moneyMonth})
+  </insert>
+  
+  <!-- 修改工资条明细的各项金额 -->
+  <update id="updateMoneyDetail">
+  	update oa_money_detail set 
+  	MONEY_BASE=#{moneyBase},
+  	MONEY_JX=#{moneyJx},
+  	MONEY_JJ=#{moneyJj},
+  	MONEY_CB=#{moneyCb},
+  	MONEY_BX=#{moneyBx},
+  	MONEY_ALL=#{moneyAll}
+  	where id = #{id}
+  </update>
+  
+  <!-- 删除工资条 -->
+  <delete id="deleteMoney">
+  	delete from oa_money where id = #{id}
+  </delete>
+  
+  <!-- 删除工资条明细 -->
+  <delete id="deleteMoneyDetailAll">
+  	delete from oa_money_detail where record_id = #{recordId}
+  </delete>
+  
+  <!-- 删除工资条明细 -->
+  <delete id="deleteMoneyDetail">
+  	delete from oa_money_detail where id = #{id}
+  </delete>
+  
+  
+</mapper>

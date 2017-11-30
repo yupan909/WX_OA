@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>采购申请单</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container containerNew">
+	<form id="frm" action="">
+		 <input type="hidden" id="id" name="id" value="">
+		 <input type="hidden" id="wid" name="wid" value="">
+		 
+		 <div class="form-group span-view">
+		   	 <label for="buyName">申请采购物品：</label>
+		     <span id="buyName"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="buyNumber">采购数量：</label>
+		    <span id="buyNumber"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="buyStandard">规格及型号：</label>
+		    <span id="buyStandard"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="buyPrice">单价：</label>
+		    <span id="buyPrice"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="buyReason">采购事由：</label>
+		    <span id="buyReason"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="buyDept">使用部门：</label>
+		    <span id="buyDept"></span>
+		 </div>
+		 <!-- 审批记录 -->
+		 <div class="form-group">
+		 	<div id="flowLog"> 
+		 	</div>
+		 </div>
+	</form>
+</div>
+
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+<script src="/plugins/calendar/WdatePicker.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>
+<script src="/js/approve/approve_buy.js"></script>
+</body>
+</html>

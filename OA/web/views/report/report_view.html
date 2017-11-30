@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>工作报告单</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container containerNew">
+	<form id="frm" action="">
+		 <input type="hidden" id="id" name="id" value="">
+		 <input type="hidden" id="wid" name="wid" value="">
+		 
+		 <div class="form-group span-view">
+		   	 <label for="reportType">报告类型：</label>
+		   	 <span id="reportType"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="reportTitle">报告标题：</label>
+		   	 <span id="reportTitle"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="reportSum">工作总结：</label>
+		   	 <span id="reportSum"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="reportPlan">工作计划：</label>
+		   	 <span id="reportPlan"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="reportRealize">工作体会：</label>
+		   	 <span id="reportRealize"></span>
+		 </div>
+		 
+		 <!-- 接收人 -->
+		 <div class="form-group">
+		 	<div id="flowLogJSR"> 
+		 	</div>
+		 </div>
+	</form>
+</div>
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+<script src="/plugins/calendar/WdatePicker.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>
+<script src="/js/report/report.js"></script>
+</body>
+</html>

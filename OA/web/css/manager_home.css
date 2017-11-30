@@ -1,0 +1,275 @@
+/* manager_home.html 专用css */
+
+body {
+  padding-top: 50px;
+  font-size: 15px;
+  font-family: "Open Sans", "Microsoft YaHei", "\5FAE\8F6F\96C5\9ED1", "Microsoft JhengHei", "\534E\6587\7EC6\9ED1", STHeiti, MingLiu, sans-serif;
+  background:url("/images/formBackground.png") repeat scroll !important;
+}
+
+/*导航栏背景颜色*/
+.navbar-inverse{
+	background:url("/images/nav.jpg") repeat scroll !important;
+	background-color: #428bca;
+	border-color: #428bca;
+}
+
+.navbar-fixed-top {
+  border: 0;
+}
+
+.div-left{
+	float:left;
+	min-height: 50px;
+	width: 30%;
+	text-align: left;
+	vertical-align: middle;
+	font-size: 24px;
+	padding-top: 10px;
+	color: #fff;
+	font-weight: bold;
+}
+.div-center{
+	float:left;
+	min-height: 50px;
+	width: 30%;
+	text-align: center;
+	font-size: 21px;
+	padding-top: 10px;
+	color: #000;
+}
+.div-right{
+	float:right;
+	min-height: 50px;
+	width: 30%;
+	text-align: right;
+	vertical-align: middle;
+	font-size: 22px;
+	padding-top: 10px;
+	color: #fff;
+	font-weight: bold;
+}
+
+/*
+ * Sidebar
+ */
+.sidebar {
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: block;
+  padding: 0px 20px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  background-color: #f5f5f5;
+  border-right: 1px solid #eee;
+}
+
+/* Sidebar navigation */
+.nav-sidebar {
+  margin-right: -21px; /* 20px padding + 1px border */
+  margin-bottom: 20px;
+  margin-left: -20px;
+}
+.nav-sidebar > li{
+  cursor:pointer;
+  border-bottom: 1px solid #ddd;
+}
+.nav-sidebar > li > a {
+  padding-right: 20px;
+  padding-left: 50px;
+  font-size: 18px;
+}
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+  color: #fff;
+  background-color: #428bca;
+}
+
+/*
+  子列表
+*/
+.child_li > a {
+  padding-left: 90px !important;
+  font-size: 17px !important;
+}
+
+/*
+ * Main content
+ */
+
+.main {
+   padding-right: 20px;
+   padding-left: 20px;
+ }
+.main .page-header {
+  margin-top: 0;
+}
+
+
+/*列表样式*/
+
+.titleDIV{ /*标题*/
+	font-size: 25px;
+	font-family: 黑体;
+	text-align: center;
+	font-weight: bold;
+	border-bottom:#df2121 2px solid;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
+
+.title2DIV{ /*标题2级*/
+	font-size: 26px;
+	text-align: center;
+}
+
+.queryDIV{ /*查询框*/
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+.queryDIV form{
+	border: #EEEEEE 2px dashed;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+.td{
+	width: 40%;
+	text-align: left;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+.t1{
+	width: 25%;
+	text-align: right;
+}
+.t2{
+	width: 70% !important;
+}
+
+.listDIV{ /*列表框*/
+	
+}
+.table{
+	text-align: center;
+	vertical-align: middle;
+}
+.table thead tr th{
+	background-color: #428bca;
+	text-align: center;
+	vertical-align: middle;
+	color: #FFF;
+}
+.table tbody tr td{
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.spz{ /*审批中*/
+	background-color: #35aa47;
+}
+.ytg{ /*已通过*/
+	background-color: #35aa47;
+}
+
+/*通讯录*/
+.people-left{
+  position: fixed;
+  top: 51px;
+  bottom: 0;
+  left: 16.66666667%;
+  z-index: 1000;
+  display: block;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  background-color: #f8f8f8;
+  border-right: 1px solid #eee;
+  width: 15%;
+}
+.root{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:5px;
+	font-size:18px;
+	color: #337ab7;
+	font-weight: bold;
+	border-bottom: 1px #337ab7 solid;
+}
+.nav-people{
+	padding-left:0;
+	margin-bottom:0;
+	list-style:none;
+}
+.nav-people > li{
+  cursor:pointer;
+}
+.nav-people > li > a {
+  width:100%;
+  padding: 3px 0px;
+}
+.nav-people > li > a > label {
+	margin-bottom: 0px;
+}
+.nav-child{
+	display: none;
+	padding-left:0;
+	margin-bottom:0;
+	list-style:none;
+}
+.nav-child > li{
+  cursor:pointer;
+  padding-left: 35px;
+}
+.nav-child > li > a {
+  width:100%;
+  padding: 0px 5px;
+  display: block;
+}
+.nav-child > li > a > label {
+	line-height:30px;
+	vertical-align:middle;
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+.dept > a{
+	width:100%;
+	font-size: 16px;
+}
+.dept > a:focus, .dept > a:hover {
+  text-decoration:none;
+  background-color:#eee;
+}
+.dept > a > label{
+	margin-left: 10px;
+}
+.user{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.user > a{
+	color: #5cb85c;
+	font-size: 16px;
+}
+.user > a > label{
+	margin-left: 5px;
+}
+.user > a > img{
+	width: 40px;
+	height: 40px;
+}
+.dept-active{
+	background-color: #428bca;
+	color: #FFF;
+}
+
+.people-right{
+	margin-left: 15%;
+    padding-left: 20px;
+}
+
+

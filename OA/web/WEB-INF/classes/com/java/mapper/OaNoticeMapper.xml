@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaNoticeDao">
+  
+  <!-- ===================================== 列表查询 ========================================= -->
+  <!-- 所有数据列表 -->
+  <select id="selectManagerList" resultType="java.util.Map">
+	select * from (select rownum rn, t.* from (
+		select id as "id", notice_title as "title", notice_time as "time" from oa_notice 
+			where 1 = 1 
+			<if test="null!=startTime and '' != startTime">
+				and to_date(substr(notice_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=endTime and '' != endTime">
+				and to_date(substr(notice_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=title and '' != title">
+				and notice_title like '%'||#{title}||'%'
+			</if> 
+			order by notice_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>
+  </select>
+  
+  <!-- 所有数据列表总条数 -->
+  <select id="selectManagerListCount" resultType="Integer">
+	select count(1) from oa_notice 
+		where 1 = 1 
+		<if test="null!=startTime and '' != startTime">
+			and to_date(substr(notice_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=endTime and '' != endTime">
+			and to_date(substr(notice_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=title and '' != title">
+			and notice_title like '%'||#{title}||'%'
+		</if> 
+  </select>
+  
+  
+  
+  <!-- 公告列表-->
+  <select id="selectList" resultType="java.util.Map">
+  	select id as "id", notice_title as "title", notice_time as "time" from oa_notice 
+		order by notice_time desc
+  </select>
+  
+  <!-- ===================================== 公告通知 ========================================= -->
+  <resultMap type="OaNotice" id="noticeMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="NOTICE_TIME" property="noticeTime" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="NOTICE_TITLE" property="noticeTitle" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="NOTICE_CONTENT" property="noticeContent" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查询 -->
+  <select id="select" resultMap="noticeMap">
+    select * from oa_notice where id = #{id}
+  </select>
+  
+
+  <!-- 新增 -->	  
+  <insert id="add">
+  	insert into oa_notice(id, NOTICE_TIME, NOTICE_TITLE, NOTICE_CONTENT) values(#{id},#{noticeTime},#{noticeTitle},#{noticeContent})
+  </insert>
+  
+  <!-- 修改 -->
+  <update id="update">
+  	update oa_notice set NOTICE_TITLE=#{noticeTitle}, NOTICE_CONTENT=#{noticeContent} where id = #{id}
+  </update>
+  
+  <!-- 删除 -->
+  <delete id="delete">
+  	delete from oa_notice where id = #{id}
+  </delete>
+  
+  
+</mapper>

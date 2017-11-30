@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>假期申请单</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container containerNew">
+	<form id="frm" action="">
+		 <input type="hidden" id="id" name="id" value="">
+		 <input type="hidden" id="wid" name="wid" value="">
+	
+		 <div class="form-group span-view">
+		   	 <label for="vacationType">假期类型：</label>
+		   	 <span id="vacationType"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="vacationStartDate">起始日期：</label>
+		    <span id="vacationStartDate"></span>
+		 </div>
+		 <div class="form-group span-view">
+		    <label for="vacationEndDate">结束日期：</label>
+		    <span id="vacationEndDate"></span>
+		 </div>
+		 <div class="form-group span-view">
+		 	<label for="vacationRemark">备注：</label>
+		    <span id="vacationRemark"></span>
+		 </div>
+		 
+		 <div class="form-group">
+		    <label for="userName"><span class="label label-success">审批人</span></label>
+		    <input type="hidden" id="userId" name="userId" value="">
+		    <span class="form-control" id="userName" onclick="Public.selectPeople();"></span>
+		 </div>
+		 <div class="form-group">
+		    <label for="idea"><span class="label label-danger">退回原因</span></label>
+		    <textarea class="form-control" rows="2" id="idea" name="idea" placeholder="退回申请人可填写原因"></textarea>
+		 </div>
+		 
+		 <!-- 审批记录 -->
+		 <div class="form-group">
+		 	<div id="flowLog"> 
+		 	</div>
+		 </div>
+		 
+		 <div class="btnDiv">
+			 <button type="button" class="btn btn-primary" onclick="endFlow();">办结</button>
+			 <button type="button" class="btn btn-success" onclick="submitFlow('go');">提交</button>
+			 <button type="button" class="btn btn-danger" onclick="submitFlow('back');">退回申请人</button>
+		 </div>
+	</form>
+</div>
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+<script src="/plugins/calendar/WdatePicker.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>
+<script src="/js/vacation/vacation.js"></script>
+</body>
+</html>

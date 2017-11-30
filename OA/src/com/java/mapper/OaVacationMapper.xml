@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaVacationDao">
+  
+  <!-- ===================================== 列表查询 ========================================= -->
+  
+  <!-- 所有数据列表 -->
+  <select id="selectManagerList" resultType="java.util.Map">
+  	select * from (select rownum rn, t.* from (
+		select m.id as "id", m.subflag as "subflag", m.cre_user_name as "user", m.cre_dept_name as "dept", m.cre_time as "time", s.vacation_type as "type", s.vacation_start_date as "startDate", s.vacation_end_date as "endDate" from oa_main m, oa_vacation s 
+			where m.id = s.id
+			and m.type = '${@com.java.common.Constant@TYPE_VACATION}' 
+			and m.subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+			<if test="null!=startTime and '' != startTime">
+				and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=endTime and '' != endTime">
+				and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=dept and '' != dept">
+				and m.cre_dept_name like '%'||#{dept}||'%'
+			</if> 
+			<if test="null!=user and '' != user">
+				and m.cre_user_name like '%'||#{user}||'%'
+			</if> 
+			<if test="null!=type and '' != type">
+				and s.vacation_type = #{type}
+			</if> 
+			<if test="null!=subflag and '' != subflag">
+				and m.subflag = #{subflag}
+			</if> 
+			order by m.cre_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>		
+  </select>
+  
+  <!-- 所有数据列表总条数 -->
+  <select id="selectManagerListCount" resultType="Integer">
+	select count(1) from oa_main m, oa_vacation s 
+		where m.id = s.id
+		and m.type = '${@com.java.common.Constant@TYPE_VACATION}' 
+		and m.subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		<if test="null!=startTime and '' != startTime">
+			and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=endTime and '' != endTime">
+			and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=dept and '' != dept">
+			and m.cre_dept_name like '%'||#{dept}||'%'
+		</if> 
+		<if test="null!=user and '' != user">
+			and m.cre_user_name like '%'||#{user}||'%'
+		</if> 
+		<if test="null!=type and '' != type">
+			and s.vacation_type = #{type}
+		</if> 
+		<if test="null!=subflag and '' != subflag">
+			and m.subflag = #{subflag}
+		</if> 
+  </select>
+  
+  
+  
+  <!-- 待处理列表 -->
+  <select id="selectListDB" resultType="java.util.Map">
+	select m.id as "id", w.id as "wid", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", w.create_time as "time", w.pre_user_name as "preUser" from oa_main m,flow_write w 
+		where m.id = w.record_id
+		and m.type = '${@com.java.common.Constant@TYPE_VACATION}' 
+		and m.subflag = '${@com.java.common.Constant@SUBFLAG_BLZ}'
+		and w.user_id = #{userId} 
+		order by w.create_time desc
+  </select>
+  
+  <!-- 已处理列表-->
+  <select id="selectListYB" resultType="java.util.Map">
+  	select m.id as "id", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", r.create_time as "time" from oa_main m,flow_read r 
+		where m.id = r.record_id
+		and m.type = '${@com.java.common.Constant@TYPE_VACATION}'
+		and r.user_id = #{userId} 
+		order by r.create_time desc
+  </select> 
+  
+  <!-- 草稿箱列表 -->
+  <select id="selectListCG" resultType="java.util.Map">
+  	select id as "id", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main  
+		where type = '${@com.java.common.Constant@TYPE_VACATION}' 
+		and subflag = '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{userId} 
+		order by cre_time desc
+  </select>
+  
+  <!-- 我申请的列表 -->
+  <select id="selectListMy" resultType="java.util.Map">
+  	select id as "id", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main 
+  		where type = '${@com.java.common.Constant@TYPE_VACATION}' 
+		and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{userId} 
+		order by cre_time desc
+  </select>
+  
+  
+  <!-- ===================================== 请假申请单 ========================================= -->
+  <resultMap type="OaVacation" id="vacationMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="VACATION_TYPE" property="vacationType" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="VACATION_START_DATE" property="vacationStartDate" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="VACATION_END_DATE" property="vacationEndDate" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="VACATION_REMARK" property="vacationRemark" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查询申请单 -->
+  <select id="select" resultMap="vacationMap">
+    select * from oa_vacation where id = #{id}
+  </select>
+  
+
+  <!-- 新增申请单 -->	  
+  <insert id="add">
+  	insert into oa_vacation(id, VACATION_TYPE, VACATION_START_DATE, VACATION_END_DATE, VACATION_REMARK) values(#{id},#{vacationType},#{vacationStartDate},#{vacationEndDate},#{vacationRemark})
+  </insert>
+  
+  <!-- 修改申请单 -->
+  <update id="update">
+  	update oa_vacation set VACATION_TYPE=#{vacationType}, VACATION_START_DATE=#{vacationStartDate}, VACATION_END_DATE=#{vacationEndDate}, VACATION_REMARK=#{vacationRemark} where id = #{id}
+  </update>
+  
+  <!-- 删除申请单 -->
+  <delete id="delete">
+  	delete from oa_vacation where id = #{id}
+  </delete>
+  
+  
+</mapper>

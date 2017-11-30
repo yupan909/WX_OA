@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>工作报告</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/list.css" rel="stylesheet">
+    
+<style type="text/css">
+    .nav>li>a{color:#5bc0de;}  
+    .nav>li>a:hover, .nav>li>a:focus{color:#46b8da;}
+    /*导航选中的背景颜色*/
+    .nav-pills>li.active>a,.nav-pills>li.active>a:hover,.nav-pills>li.active>a:focus{color:#fff;background-color:#5bc0de}
+</style>
+</head>
+<body>
+	<nav class="navbar navbar-fixed-top">
+		<ul class="nav nav-pills" style="background-color: #f8f8f8;">
+			<li role="presentation" style="width: 33%;text-align: center;" id="my" class="active"><a href="#">我的报告</a></li>
+	 		<li role="presentation" style="width: 33%;text-align: center;" id="dyb" ><a href="#">报告给我</a></li>
+	 		<li role="presentation" style="width: 32%;text-align: center;" id="cg" ><a href="#">草稿箱</a></li>
+		</ul>
+	</nav>
+	
+	<div class="container" style="margin:50px 0px;" id="listDiv">
+	</div>
+	
+	<nav class="navbar-default  navbar-fixed-bottom">
+		<a class="btn btn-info btn-block" style="border-radius:0px;height: 45px;padding-top: 10px;" href="/views/report/report_form.html">提交报告</a>
+	</nav>
+	
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>	
+<script src="/js/report/report_home.js"></script>	
+</body>
+</html>

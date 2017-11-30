@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaReportDao">
+  
+  <!-- ===================================== 列表查询 ========================================= -->
+  
+  <!-- 所有数据列表 -->
+  <select id="selectManagerList" resultType="java.util.Map">
+  	select * from (select rownum rn, t.* from (
+		select m.id as "id", m.cre_user_name as "user", m.cre_dept_name as "dept", m.cre_time as "time", s.report_type as "type", s.report_title as "title" from oa_main m, oa_report s 
+			where m.id = s.id
+			and m.type = '${@com.java.common.Constant@TYPE_REPORT}' 
+			and m.subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+			<if test="null!=startTime and '' != startTime">
+				and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=endTime and '' != endTime">
+				and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=dept and '' != dept">
+				and m.cre_dept_name like '%'||#{dept}||'%'
+			</if> 
+			<if test="null!=user and '' != user">
+				and m.cre_user_name like '%'||#{user}||'%'
+			</if> 
+			<if test="null!=type and '' != type">
+				and s.report_type = #{type}
+			</if> 
+			<if test="null!=title and '' != title">
+				and s.report_title like '%'||#{title}||'%'
+			</if> 
+			order by m.cre_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>		
+  </select>
+  
+  <!-- 所有数据列表总条数 -->
+  <select id="selectManagerListCount" resultType="Integer">
+	select count(1) from oa_main m, oa_report s 
+		where m.id = s.id
+		and m.type = '${@com.java.common.Constant@TYPE_REPORT}' 
+		and m.subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		<if test="null!=startTime and '' != startTime">
+			and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=endTime and '' != endTime">
+			and to_date(substr(m.cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=dept and '' != dept">
+			and m.cre_dept_name like '%'||#{dept}||'%'
+		</if> 
+		<if test="null!=user and '' != user">
+			and m.cre_user_name like '%'||#{user}||'%'
+		</if> 
+		<if test="null!=type and '' != type">
+			and s.report_type = #{type}
+		</if> 
+		<if test="null!=title and '' != title">
+			and s.report_title like '%'||#{title}||'%'
+		</if> 
+  </select>
+  
+  
+  <!-- 我的报告 -->
+  <select id="selectListMy" resultType="java.util.Map">
+  	select id as "id", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main 
+  		where type = '${@com.java.common.Constant@TYPE_REPORT}' 
+		and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{userId} 
+		order by cre_time desc
+  </select>
+  
+  <!-- 报告给我 -->
+  <select id="selectListDYB" resultType="java.util.Map">
+	select * from (
+		select m.id as "id", w.id as "wid", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", w.create_time as "time", w.user_id as "userId" from oa_main m,flow_write w 
+			where m.id = w.record_id and m.type = '${@com.java.common.Constant@TYPE_REPORT}' 
+		union
+		select m.id as "id", '' as "wid", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", r.create_time as "time", r.user_id as "userId" from oa_main m,flow_read r 	
+			where m.id = r.record_id and m.type = '${@com.java.common.Constant@TYPE_REPORT}'
+	) where "userId" = #{userId} order by "time" desc
+  </select>
+  
+  <!-- 草稿箱列表 -->
+  <select id="selectListCG" resultType="java.util.Map">
+  	select id as "id", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main  
+		where type = '${@com.java.common.Constant@TYPE_REPORT}' 
+		and subflag = '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{userId} 
+		order by cre_time desc
+  </select>
+  
+  
+  
+  <!-- ===================================== 工作报告单 ========================================= -->
+  <resultMap type="OaReport" id="reportMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="REPORT_TYPE" property="reportType" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="REPORT_TITLE" property="reportTitle" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="REPORT_SUM" property="reportSum" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="REPORT_PLAN" property="reportPlan" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="REPORT_REALIZE" property="reportRealize" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查询申请单 -->
+  <select id="select" resultMap="reportMap">
+    select * from oa_report where id = #{id}
+  </select>
+  
+
+  <!-- 新增申请单 -->	  
+  <insert id="add">
+  	insert into oa_report(id, REPORT_TYPE, REPORT_TITLE, REPORT_SUM, REPORT_PLAN, REPORT_REALIZE) values(#{id},#{reportType},#{reportTitle},#{reportSum},#{reportPlan},#{reportRealize})
+  </insert>
+  
+  <!-- 修改申请单 -->
+  <update id="update">
+  	update oa_report set REPORT_TYPE=#{reportType}, REPORT_TITLE=#{reportTitle}, REPORT_SUM=#{reportSum}, REPORT_PLAN=#{reportPlan}, REPORT_REALIZE=#{reportRealize} where id = #{id}
+  </update>
+  
+  <!-- 删除申请单 -->
+  <delete id="delete">
+  	delete from oa_report where id = #{id}
+  </delete>
+  
+  
+</mapper>

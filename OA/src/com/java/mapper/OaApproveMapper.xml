@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <!-- 
+ 	1. namespace 必须和实体类的接口类全类名一致
+ 	2. select中的id必须和接口类中对应的方法名一致
+  --> 
+<mapper namespace="com.java.dao.OaApproveDao">
+  
+  <!-- ===================================== 列表查询 ========================================= -->
+  
+  <!-- 所有数据列表 -->
+  <select id="selectManagerList" resultType="java.util.Map">
+	select * from (select rownum rn, t.* from (
+		select id as "id", type as "type", subflag as "subflag", cre_user_name as "user", cre_dept_name as "dept", title as "title", cre_time as "time" from oa_main 
+	  		where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+			and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+			<if test="null!=startTime and '' != startTime">
+				and to_date(substr(cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=endTime and '' != endTime">
+				and to_date(substr(cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+			</if> 
+			<if test="null!=dept and '' != dept">
+				and cre_dept_name like '%'||#{dept}||'%'
+			</if> 
+			<if test="null!=user and '' != user">
+				and cre_user_name like '%'||#{user}||'%'
+			</if> 
+			<if test="null!=type and '' != type">
+				and type = #{type}
+			</if> 
+			<if test="null!=subflag and '' != subflag">
+				and subflag = #{subflag}
+			</if> 
+			order by cre_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>
+  </select>
+  
+  <!-- 所有数据列表总条数 -->
+  <select id="selectManagerListCount" resultType="Integer">
+	select count(1) from oa_main 
+  		where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+		and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		<if test="null!=startTime and '' != startTime">
+			and to_date(substr(cre_time,0,10),'yyyy-MM-dd')  &gt;= to_date(#{startTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=endTime and '' != endTime">
+			and to_date(substr(cre_time,0,10),'yyyy-MM-dd')  &lt;= to_date(#{endTime},'yyyy-MM-dd')
+		</if> 
+		<if test="null!=dept and '' != dept">
+			and cre_dept_name like '%'||#{dept}||'%'
+		</if> 
+		<if test="null!=user and '' != user">
+			and cre_user_name like '%'||#{user}||'%'
+		</if> 
+		<if test="null!=type and '' != type">
+			and type = #{type}
+		</if> 
+		<if test="null!=subflag and '' != subflag">
+			and subflag = #{subflag}
+		</if>
+  </select>
+  
+  <!-- 待处理列表 -->
+  <select id="selectListDB" resultType="java.util.Map">
+ 	select * from (select rownum rn, t.* from (
+		select m.id as "id", w.id as "wid", m.type as "type", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", w.create_time as "time", w.pre_user_name as "preUser" from oa_main m,flow_write w 
+			where m.id = w.record_id
+			and m.type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+			and m.subflag = '${@com.java.common.Constant@SUBFLAG_BLZ}'
+			and w.user_id = #{user} 
+			order by w.create_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>
+  </select>	
+  
+  <!-- 待处理列表总条数 -->
+  <select id="selectListDBCount" resultType="Integer">
+	select count(1) from oa_main m,flow_write w 
+		where m.id = w.record_id
+		and m.type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+		and m.subflag = '${@com.java.common.Constant@SUBFLAG_BLZ}'
+		and w.user_id = #{user} 
+  </select>
+  
+  <!-- 已处理列表-->
+  <select id="selectListYB" resultType="java.util.Map">
+  	select * from (select rownum rn, t.* from (
+	  	select m.id as "id", m.type as "type", m.subflag as "subflag", m.cre_user_name as "user", m.title as "title", r.create_time as "time" from oa_main m,flow_read r 
+			where m.id = r.record_id
+			and m.type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+			and r.user_id = #{user} 
+			order by r.create_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>			
+  </select> 
+  
+  <!-- 已处理列表总条数-->
+  <select id="selectListYBCount" resultType="Integer">
+  	select count(1) from oa_main m,flow_read r 
+		where m.id = r.record_id
+		and m.type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+		and r.user_id = #{user} 
+  </select> 
+  
+  <!-- 草稿箱列表 -->
+  <select id="selectListCG" resultType="java.util.Map">
+  	select * from (select rownum rn, t.* from (
+	  	select id as "id", type as "type", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main  
+			where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+			and subflag = '${@com.java.common.Constant@SUBFLAG_CG}'
+			and cre_user_id = #{user} 
+			order by cre_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>	
+  </select>
+  
+  <!-- 草稿箱列表总条数-->
+  <select id="selectListCGCount" resultType="Integer">
+  	select count(1) from oa_main  
+		where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+		and subflag = '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{user} 
+  </select>
+  
+  <!-- 我申请的列表 -->
+  <select id="selectListMy" resultType="java.util.Map">
+  	select * from (select rownum rn, t.* from (
+	  	select id as "id", type as "type", subflag as "subflag", cre_user_name as "user", title as "title", cre_time as "time" from oa_main 
+	  		where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+			and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+			and cre_user_id = #{user} 
+			order by cre_time desc
+	) t	
+	<if test="null!=endIndex and '' != endIndex">
+	   where rownum &lt;= #{endIndex} 
+	</if>
+	) 
+	<if test="null!=startIndex and '' != startIndex">
+		where rn &gt;=#{startIndex}
+	</if>			
+  </select>
+  
+  <!-- 我申请的列表总条数-->
+  <select id="selectListMyCount" resultType="Integer">
+  	select count(1) from oa_main 
+  		where type in('${@com.java.common.Constant@TYPE_APPROVE_BUY}','${@com.java.common.Constant@TYPE_APPROVE_FINANCE}') 
+		and subflag != '${@com.java.common.Constant@SUBFLAG_CG}'
+		and cre_user_id = #{user} 
+  </select>
+  
+  
+  <!-- ===================================== 采购申请单 ========================================= -->
+  <resultMap type="OaApproveBuy" id="buyMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_NAME" property="buyName" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_NUMBER" property="buyNumber" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_STANDARD" property="buyStandard" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_PRICE" property="buyPrice" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_REASON" property="buyReason" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="BUY_DEPT" property="buyDept" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+  
+  <!-- 查询采购申请单 -->
+  <select id="selectBuy" resultMap="buyMap">
+    select * from oa_approve_buy where id = #{id}
+  </select>
+  
+
+  <!-- 新增采购申请单 -->	  
+  <insert id="addBuy">
+  	insert into oa_approve_buy(id,BUY_NAME,BUY_NUMBER,BUY_STANDARD,BUY_PRICE,BUY_REASON,BUY_DEPT) values(#{id},#{buyName},#{buyNumber},#{buyStandard},#{buyPrice},#{buyReason},#{buyDept})
+  </insert>
+  
+  <!-- 修改采购申请单 -->
+  <update id="updateBuy">
+  	update oa_approve_buy set buy_name=#{buyName}, BUY_NUMBER=#{buyNumber}, BUY_STANDARD=#{buyStandard}, BUY_PRICE=#{buyPrice}, BUY_REASON=#{buyReason}, BUY_DEPT=#{buyDept} where id = #{id}
+  </update>
+  
+  <!-- 删除采购申请单 -->
+  <delete id="deleteBuy">
+  	delete from oa_approve_buy where id = #{id}
+  </delete>
+  
+  
+  <!-- ===================================== 费用报销申请单 ========================================= -->
+  
+  <!-- 查询费用报销申请单 -->
+  <select id="selectFinance" resultMap="financeMap">
+    select * from oa_approve_finance where id = #{id}
+  </select>
+  
+  <resultMap type="OaApproveFinance" id="financeMap">
+  	<id column="id" property="id" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="FINANCE_TYPE" property="financeType" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="FINANCE_DATE" property="financeDate" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="FINANCE_CONTENT" property="financeContent" javaType="string" jdbcType="VARCHAR"/>
+  	<result column="FINANCE_MONEY" property="financeMoney" javaType="string" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <!-- 新增费用报销申请单 -->	  
+  <insert id="addFinance">
+  	insert into oa_approve_finance values(#{id},#{financeType},#{financeDate},#{financeContent},#{financeMoney})
+  </insert>
+  
+  <!-- 修改费用报销申请单 -->
+  <update id="updateFinance">
+  	update oa_approve_finance set 
+  	FINANCE_TYPE=#{financeType}, 
+  	FINANCE_DATE=#{financeDate}, 
+  	FINANCE_CONTENT=#{financeContent}, 
+  	FINANCE_MONEY=#{financeMoney}
+  	where id = #{id}
+  </update>
+  
+  <!-- 删除费用报销申请单 -->
+  <delete id="deleteFinance">
+  	delete from oa_approve_finance where id = #{id}
+  </delete>
+  
+  
+</mapper>

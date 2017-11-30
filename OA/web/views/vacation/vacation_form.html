@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>假期申请单</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/css/form.css" rel="stylesheet">
+</head>
+<body>
+<div class="container containerNew">
+	<form id="frm" action="">
+		 <input type="hidden" id="id" name="id" value="">
+		 <input type="hidden" id="wid" name="wid" value="">
+	
+		 <div class="form-group">
+		   	 <label for="vacationType"><label style="color: red">*</label>假期类型：</label>
+		   	 <select class="form-control" id="vacationType" name="vacationType">
+		   	 	<option value="">请选择</option>
+		   	 	<option value="01">出差</option>
+		   	 	<option value="02">事假</option>
+		   	 	<option value="03">病假</option>
+		   	 	<option value="04">产假</option>
+		   	 	<option value="05">年假</option>
+		   	 	<option value="06">婚假</option>
+		   	 	<option value="07">丧假</option>
+		   	 </select>
+		 </div>
+		 <div class="form-group">
+		    <label for="vacationStartDate"><label style="color: red">*</label>起始日期：</label>
+		    <input type="date" class="form-control" id="vacationStartDate" name="vacationStartDate" placeholder="请假起始日期">
+		 </div>
+		 <div class="form-group">
+		    <label for="vacationEndDate"><label style="color: red">*</label>结束日期：</label>
+		    <input type="date" class="form-control" id="vacationEndDate" name="vacationEndDate" placeholder="请假结束日期">
+		 </div>
+		 <div class="form-group">
+		 	<label for="vacationRemark">备注：</label>
+		    <textarea class="form-control" rows="3" id="vacationRemark" name="vacationRemark" placeholder="填写相关备注说明"></textarea>
+		 </div>
+		 
+		 <!-- 审批人 -->
+		 <div class="form-group">
+		 	<label for="userName"><span class="label label-success">审批人</span></label>
+		    <input type="hidden" id="userId" name="userId" value="">
+		    <span class="form-control" id="userName" onclick="Public.selectPeople();"></span>
+		 </div>
+		 
+		 <!-- 审批记录 -->
+		 <div class="form-group">
+		 	<div id="flowLog"> 
+		 	</div>
+		 </div>
+		 
+		 <div class="btnDiv">
+			 <button type="button" class="btn btn-primary" onclick="save();">保存</button>
+			 <button type="button" class="btn btn-success" onclick="saveAndSubmit();">提交</button>
+		 </div>
+	</form>
+</div>
+<script src="/plugins/bootstrap/js/jquery.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+<script src="/plugins/calendar/WdatePicker.js"></script>
+<script src="/plugins/layer/layer.js"></script>
+<script src="/js/Public.js"></script>
+<script src="/js/vacation/vacation.js"></script>
+</body>
+</html>

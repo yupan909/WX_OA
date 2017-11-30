@@ -1,0 +1,115 @@
+/*列表公用css*/
+
+body{
+	background:url("/images/formBackground.png") repeat scroll !important;
+}
+.rowNew{
+	line-height: 20px;
+	border-bottom: 1px #ccc dashed;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	margin-left: 1px;
+	margin-right: 1px;
+}
+.col-left{
+	text-align:left;
+	font-size: 22px;
+	line-height: 40px;
+}
+.col-height{
+	line-height: 40px;
+}
+.col-right{
+	text-align:right;
+	line-height: 40px;
+	width: 32%;
+}
+.col-sendUser{
+	line-height: 20px;
+	text-align: center;
+}
+.col-center{
+	text-align: center;
+}
+#listDiv{
+	margin: 50px 0px 10px 0px;
+}
+#page{
+	margin-bottom: 50px;
+}
+/*通讯录*/
+.root{
+	padding-top:2px;
+	padding-bottom:2px;
+	padding-left:5px;
+	font-size:22px;
+	color: #337ab7;
+	font-weight: bold;
+	border-bottom: 1px #337ab7 solid;
+}
+.nav-people{
+	padding-left:0;
+	margin-bottom:0;
+	list-style:none;
+}
+.nav-people > li{
+  cursor:pointer;
+}
+.nav-people > li > a {
+  width:100%;
+  padding: 3px 0px;
+}
+.nav-people > li > a > label {
+	margin-bottom: 0px;
+}
+.nav-child{
+	display: none;
+	padding-left:0;
+	margin-bottom:0;
+	list-style:none;
+}
+.nav-child > li{
+  cursor:pointer;
+  padding-left: 35px;
+}
+.nav-child > li > a {
+  width:100%;
+  padding: 3px 10px;
+  display: block;
+}
+.nav-child > li > a > label {
+	line-height:30px;
+	vertical-align:middle;
+	margin-bottom: 0px;
+	font-weight: normal;
+}
+.dept{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.dept > a{
+	width:100%;
+	font-size: 20px;
+}
+.dept > a:focus, .dept > a:hover {
+  text-decoration:none;
+  background-color:#eee;
+}
+.dept > a > label{
+	margin-left: 10px;
+}
+.user{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.user > a{
+	color: #5cb85c;
+	font-size: 18px;
+}
+.user > a > label{
+	margin-left: 5px;
+}
+.user > a > img{
+	width: 40px;
+	height: 40px;
+}

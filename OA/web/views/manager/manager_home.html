@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <meta http-equiv="Pragma" content="no-cache" />   
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    <title>首页</title>
+    <link href="/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/plugins/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet">
+    <link href="/plugins/laypage/laypage/skin/laypage.css" rel="stylesheet">
+    <link href="/css/manager_home.css" rel="stylesheet">
+</head>
+<body>
+	<!-- 导航栏 -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="div-left"><span class="glyphicon glyphicon-home"></span> 移动办公后台管理中心</div>
+			<div class="div-center" id="currentTimeInfo"></div>
+			<div class="div-right"><span id="loginName"></span>，欢迎您！&nbsp;&nbsp;<a href="#" style="color: #CCC;" onclick="loginOut();">退出</a></div>
+		</div>
+	</nav>
+
+	<div class="container-fluid">
+      <div class="row">
+      	<!-- 左侧列表 -->
+        <div class="col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active" id="/views/manager/manager_approve.html"><a><span class="glyphicon glyphicon-list-alt"></span> 审批管理</a></li>
+            <li id="/views/manager/manager_vacation.html"><a><span class="glyphicon glyphicon-calendar"></span> 假期管理</a></li>
+            <li id="/views/manager/manager_report.html"><a><span class="glyphicon glyphicon-edit"></span> 工作报告</a></li>
+            <li id="/views/manager/manager_notice.html"><a><span class="glyphicon glyphicon-comment"></span> 通知公告</a></li>
+            <li><a><span class="glyphicon glyphicon-user"></span> 个人中心&nbsp;&nbsp;<span class="glyphicon glyphicon-menu-down"></span></a></li>
+            <li class="child_li" style="display: none;" id="/views/manager/manager_person_people.html"><a>通讯录</a></li>
+            <li class="child_li" style="display: none;" id="/views/manager/manager_person_money.html"><a>工资条</a></li>
+          </ul>
+        </div>
+        
+        <!-- 右侧主内容 -->
+        <div class="col-md-10 col-md-offset-2 main">
+        </div>
+        
+      </div>
+    </div>
+    
+    <script src="/plugins/bootstrap/js/jquery.min.js"></script>
+	<script src="/plugins/bootstrap/js/bootstrap.min.js"></script>
+	<script src="/plugins/bootstrap/js/bootstrapValidator.min.js"></script>
+	<script src="/plugins/calendar/WdatePicker.js"></script>
+	<script src="/plugins/layer/layer.js"></script>
+	<script src="/plugins/laypage/laypage/laypage.js"></script>
+	<script src="/js/Public.js"></script>
+	<script src="/js/manager/manager_home.js"></script>
+</body>
+</html>
